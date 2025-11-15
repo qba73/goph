@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/melbahja/goph"
 	"github.com/pkg/sftp"
+	"github.com/qba73/goph"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -39,7 +39,6 @@ import (
 //
 
 var (
-	err        error
 	auth       goph.Auth
 	client     *goph.Client
 	addr       string
@@ -87,21 +86,18 @@ func VerifyHost(host string, remote net.Addr, key ssh.PublicKey) error {
 	// Host in known hosts but key mismatch!
 	// Maybe because of MAN IN THE MIDDLE ATTACK!
 	if hostFound && err != nil {
-
 		return err
 	}
 
 	// handshake because public key already exists.
 	if hostFound && err == nil {
-
 		return nil
 	}
 
 	// Ask user to check if he trust the host public key.
-	if askIsHostTrusted(host, key) == false {
-
+	if !askIsHostTrusted(host, key) {
 		// Make sure to return error on non trusted keys.
-		return errors.New("you typed no, aborted!")
+		return errors.New("you typed no, aborted")
 	}
 
 	// Add the new host to known hosts file.
@@ -109,24 +105,17 @@ func VerifyHost(host string, remote net.Addr, key ssh.PublicKey) error {
 }
 
 func main() {
-
 	flag.Parse()
 
 	var err error
 
 	if agent || goph.HasAgent() {
-
 		auth, err = goph.UseAgent()
-
 	} else if pass {
-
 		auth = goph.Password(askPass("Enter SSH Password: "))
-
 	} else {
-
 		auth, err = goph.Key(key, getPassphrase(passphrase))
 	}
-
 	if err != nil {
 		panic(err)
 	}
@@ -138,7 +127,6 @@ func main() {
 		Auth:     auth,
 		Callback: VerifyHost,
 	})
-
 	if err != nil {
 		panic(err)
 	}
@@ -167,64 +155,47 @@ func main() {
 }
 
 func askPass(msg string) string {
-
 	fmt.Print(msg)
-
 	pass, err := terminal.ReadPassword(0)
-
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println("")
-
 	return strings.TrimSpace(string(pass))
 }
 
 func getPassphrase(ask bool) string {
-
 	if ask {
-
 		return askPass("Enter Private Key Passphrase: ")
 	}
-
 	return ""
 }
 
 func askIsHostTrusted(host string, key ssh.PublicKey) bool {
-
 	reader := bufio.NewReader(os.Stdin)
-
 	fmt.Printf("Unknown Host: %s \nFingerprint: %s \n", host, ssh.FingerprintSHA256(key))
 	fmt.Print("Would you like to add it? type yes or no: ")
 
 	a, err := reader.ReadString('\n')
-
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	return strings.ToLower(strings.TrimSpace(a)) == "yes"
 }
 
 func getSftp(client *goph.Client) *sftp.Client {
-
 	var err error
-
 	if sftpc == nil {
-
 		sftpc, err = client.NewSftp()
-
 		if err != nil {
 			panic(err)
 		}
 	}
-
 	return sftpc
 }
 
 func playWithSSHJustForTestingThisProgram(client *goph.Client) {
-
 	fmt.Println("Welcome To Goph :D")
 	fmt.Printf("Connected to %s\n", client.Config.Addr)
 	fmt.Println("Type your shell command and enter.")

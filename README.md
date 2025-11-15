@@ -1,10 +1,10 @@
 <div align="center">
-	<h1>Golang SSH Client.</h1>
-	<a href="https://github.com/melbahja/goph">
-		<img src="https://github.com/melbahja/goph/raw/master/.github/goph.png" width="200">
+	<h1>Go SSH Client.</h1>
+	<a href="https://github.com/qba73/goph">
+		<img src="https://github.com/qba73/goph/raw/main/.github/goph.png" width="200">
 	</a>
 	<h4 align="center">
-		Fast and easy golang ssh client module.
+		Fast and easy Go ssh client module.
 	</h4>
 	<p>Goph is a lightweight Go SSH client focusing on simplicity!</p>
 </div>
@@ -17,16 +17,17 @@
 	<a href="#-license">License</a>
 </p>
 
+## Introduction
 
-## 🚀&nbsp; Installation and Documentation
+This project is a detached fork of the [goph](https://github.com/melbahja/goph) originally developed by [melbahja](https://github.com/melbahja). The original project is not maintained. The goal of this version is to address [opened issues](https://github.com/melbahja/goph/issues), [PRs](https://github.com/melbahja/goph/pulls), and add new functionality required to talk with routers and switches from various vendors.
+
+## Installation and Documentation
 
 ```bash
-go get github.com/melbahja/goph
+go get github.com/qba73/goph
 ```
 
-You can find the docs at [go docs](https://pkg.go.dev/github.com/melbahja/goph).
-
-## 🤘&nbsp; Features
+## Features
 
 - Easy to use and **simple API**.
 - Supports **known hosts** by default.
@@ -40,7 +41,7 @@ You can find the docs at [go docs](https://pkg.go.dev/github.com/melbahja/goph).
 - Supports **file system operations** like: `Open, Create, Chmod...`
 - Supports **context.Context** for command cancellation.
 
-## 📄&nbsp; Usage
+## Usage
 
 Run a command via ssh:
 ```go
@@ -49,13 +50,13 @@ package main
 import (
 	"log"
 	"fmt"
-	"github.com/melbahja/goph"
+	"github.com/qba73/goph"
 )
 
 func main() {
 
 	// Start new ssh connection with private key.
-	auth, err := goph.Key("/home/mohamed/.ssh/id_rsa", "")
+	auth, err := goph.Key("/home/user/.ssh/id_rsa", "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -80,9 +81,9 @@ func main() {
 }
 ```
 
-#### 🔐 Start Connection With Protected Private Key:
+#### Start Connection With Protected Private Key:
 ```go
-auth, err := goph.Key("/home/mohamed/.ssh/id_rsa", "you_passphrase_here")
+auth, err := goph.Key("/home/user/.ssh/id_rsa", "you_passphrase_here")
 if err != nil {
 	// handle error
 }
@@ -90,12 +91,12 @@ if err != nil {
 client, err := goph.New("root", "192.1.1.3", auth)
 ```
 
-#### 🔑 Start Connection With Password:
+#### Start Connection With Password:
 ```go
 client, err := goph.New("root", "192.1.1.3", goph.Password("you_password_here"))
 ```
 
-#### ☛ Start Connection With SSH Agent (Unix systems only):
+#### Start Connection With SSH Agent (Unix systems only):
 ```go
 auth, err := goph.UseAgent()
 if err != nil {
@@ -105,22 +106,22 @@ if err != nil {
 client, err := goph.New("root", "192.1.1.3", auth)
 ```
 
-#### ⤴️ Upload Local File to Remote:
+#### Upload Local File to Remote:
 ```go
 err := client.Upload("/path/to/local/file", "/path/to/remote/file")
 ```
 
-#### ⤵️ Download Remote File to Local:
+#### Download Remote File to Local:
 ```go
 err := client.Download("/path/to/remote/file", "/path/to/local/file")
 ```
 
-#### ☛ Execute Bash Commands:
+#### Execute Bash Commands:
 ```go
 out, err := client.Run("bash -c 'printenv'")
 ```
 
-#### ☛ Execute Bash Command with timeout:
+#### Execute Bash Command with timeout:
 ```go
 context, cancel := context.WithTimeout(ctx, time.Second)
 defer cancel()
@@ -128,12 +129,12 @@ defer cancel()
 out, err := client.RunContext(ctx, "sleep 5")
 ```
 
-#### ☛ Execute Bash Command With Env Variables:
+#### Execute Bash Command With Env Variables:
 ```go
 out, err := client.Run(`env MYVAR="MY VALUE" bash -c 'echo $MYVAR;'`)
 ```
 
-#### 🥪 Using Goph Cmd:
+#### Using Goph Cmd:
 
 `Goph.Cmd` struct is like the Go standard `os/exec.Cmd`.
 
@@ -174,17 +175,17 @@ file.Write([]byte(`Hello world`))
 file.Close()
 
 ```
-🗒️ For more file operations see [SFTP Docs](https://github.com/pkg/sftp).
+For more file operations see [SFTP Docs](https://github.com/pkg/sftp).
 
 
-## 🥙&nbsp; Examples
+## Examples
 
-See [Examples](https://github.com/melbahja/ssh/blob/master/examples).
+See [Examples](https://github.com/qba73/ssh/blob/master/examples).
 
-## 🤝&nbsp; Missing a Feature?
+## Missing a Feature?
 
 Feel free to open a new issue, or contact me.
 
-## 📘&nbsp; License
+## License
 
-Goph is provided under the [MIT License](https://github.com/melbahja/goph/blob/master/LICENSE).
+Goph is provided under the [MIT License](https://github.com/qba73/goph/blob/master/LICENSE).
