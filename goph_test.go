@@ -8,7 +8,7 @@ import (
 
 	"github.com/qba73/goph"
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
+	terminal "golang.org/x/term"
 )
 
 var privateBytes = []byte(`
