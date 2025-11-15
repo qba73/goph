@@ -3,7 +3,6 @@ module github.com/qba73/goph
 go 1.25
 
 require (
-	github.com/melbahja/goph v1.4.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.10
 	golang.org/x/crypto v0.44.0
