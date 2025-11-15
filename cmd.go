@@ -1,14 +1,12 @@
-// Copyright 2020 Mohammed El Bahja. All rights reserved.
-// Use of this source code is governed by a MIT license.
-
 package goph
 
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
-	"strings"
 )
 
 // Cmd it's like os/exec.Cmd but for ssh session.
